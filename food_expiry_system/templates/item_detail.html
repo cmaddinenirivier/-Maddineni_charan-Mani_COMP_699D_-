@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Item Details</h2>
+
+<p>
+This page shows detailed information about a selected grocery item.
+You can review its purchase date, expiry status, and track how it has been used over time.
+</p>
+
+<div class="section">
+
+    <h3>Basic Information</h3>
+
+    <p><strong>Name:</strong> {{ item.name }}</p>
+    <p><strong>Category:</strong> {{ item.category }}</p>
+    <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+    <p><strong>Purchase Date:</strong> {{ item.purchase_date }}</p>
+    <p><strong>Expiry Date:</strong> {{ item.expiry_date }}</p>
+    <p><strong>Status:</strong> {{ item.status }}</p>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Usage Actions</h3>
+
+    <p>
+    Record how this item is being used. This helps the system learn usage patterns
+    and improve future recommendations.
+    </p>
+
+    <form method="POST" action="/use_item/{{ item.id }}">
+        <input type="hidden" name="household_id" value="{{ request.args.get('household_id') }}">
+        <input type="number" name="quantity" placeholder="Quantity used" required>
+
+        <button name="action" value="used">Mark as Used</button>
+        <button name="action" value="partial">Mark as Partially Used</button>
+        <button name="action" value="wasted">Mark as Wasted</button>
+    </form>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Navigation</h3>
+
+    <a href="/items?household_id={{ request.args.get('household_id') }}">Back to Items</a> |
+    <a href="/dashboard?household_id={{ request.args.get('household_id') }}">Go to Dashboard</a> |
+    <a href="/alerts?household_id={{ request.args.get('household_id') }}">View Alerts</a>
+
+</div>
+
+{% endblock %}

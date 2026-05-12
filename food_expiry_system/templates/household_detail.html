@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Household Details</h2>
+
+<p>
+This page shows all members in your household. You can add new members to collaborate 
+or remove existing members. All members can manage grocery items within this household.
+</p>
+
+<div class="section">
+
+    <h3>Household Name</h3>
+    <p><strong>{{ household.name }}</strong></p>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Add New Member</h3>
+
+    <p>
+    Enter the user ID of the person you want to add to this household.
+    Make sure the user has already registered in the system.
+    </p>
+
+    <form method="POST" action="/household/{{ household.id }}/add_member">
+        <input type="number" name="user_id" placeholder="Enter User ID" required>
+        <button type="submit">Add Member</button>
+    </form>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Household Members</h3>
+
+    {% if members %}
+        <ul class="list">
+            {% for m in members %}
+                <li>
+                    <strong>{{ m.name }}</strong> ({{ m.email }}) - {{ m.role }}
+                    <br>
+                    <a href="/household/{{ household.id }}/remove_member/{{ m.id }}">
+                        Remove Member
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No members found.</p>
+    {% endif %}
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Quick Navigation</h3>
+
+    <a href="/items?household_id={{ household.id }}">Go to Grocery Items</a> |
+    <a href="/dashboard?household_id={{ household.id }}">Open Dashboard</a> |
+    <a href="/alerts?household_id={{ household.id }}">View Alerts</a>
+
+</div>
+
+<hr>
+
+<a href="/households">Back to Households</a>
+
+{% endblock %}

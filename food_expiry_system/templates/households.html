@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Your Households</h2>
+
+<p>
+This section allows you to manage your household spaces. 
+Each household represents a shared grocery environment where multiple users can track food items together.
+</p>
+
+<div class="section">
+
+    <h3>Create New Household</h3>
+
+    <form method="POST" action="/household/create">
+        <input type="text" name="name" placeholder="Enter household name" required>
+        <button type="submit">Create Household</button>
+    </form>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Available Households</h3>
+
+    {% if households %}
+        <ul class="list">
+            {% for h in households %}
+                <li>
+                    <strong>{{ h.name }}</strong>
+                    <br>
+                    <a href="/household/{{ h.id }}">View Details</a> |
+                    <a href="/items?household_id={{ h.id }}">View Grocery Items</a> |
+                    <a href="/dashboard?household_id={{ h.id }}">Open Dashboard</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No households found. Create one to get started.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

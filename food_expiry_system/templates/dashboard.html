@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Dashboard</h2>
+
+<p>
+This dashboard provides a summary of your household food usage.
+It highlights items nearing expiry, shows system predictions, and presents waste trends.
+Use this page to make informed decisions and reduce food waste.
+</p>
+
+<div class="section">
+
+    <h3>Summary Overview</h3>
+
+    <ul class="list">
+        <li>Total Items: {{ summary.total_items }}</li>
+        <li>Used Items: {{ summary.used_items }}</li>
+        <li>Wasted Items: {{ summary.wasted_items }}</li>
+        <li>Expiring Soon: {{ summary.expiring_soon }}</li>
+    </ul>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Items Near Expiry with Risk Prediction</h3>
+
+    {% if items %}
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Expiry Date</th>
+                <th>Risk Status</th>
+                <th>Probability</th>
+                <th>Reasons</th>
+            </tr>
+
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.expiry_date }}</td>
+                <td>{{ item.risk_label }}</td>
+                <td>{{ item.risk_probability }}</td>
+                <td>{{ item.risk_reasons }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No items nearing expiry.</p>
+    {% endif %}
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Weekly Waste Trend</h3>
+
+    <p>
+    This section shows how many items were wasted each week.
+    Use this insight to adjust purchasing and usage habits.
+    </p>
+
+    {% if trends %}
+        <table>
+            <tr>
+                <th>Week</th>
+                <th>Wasted Items</th>
+            </tr>
+
+            {% for t in trends %}
+            <tr>
+                <td>{{ t.week }}</td>
+                <td>{{ t.waste_count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No waste data available.</p>
+    {% endif %}
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Navigation</h3>
+
+    <a href="/items?household_id={{ household_id }}">Manage Items</a> |
+    <a href="/alerts?household_id={{ household_id }}">View Alerts</a> |
+    <a href="/households">Back to Households</a>
+
+</div>
+
+{% endblock %}

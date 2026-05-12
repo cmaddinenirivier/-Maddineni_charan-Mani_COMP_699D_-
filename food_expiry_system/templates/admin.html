@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Admin Dashboard</h2>
+
+<p>
+This page is restricted to system administrators. It provides an overview of system usage,
+user activity, and allows retraining of the prediction model. Use this section to monitor
+system performance and maintain data quality.
+</p>
+
+<div class="section">
+
+    <h3>System Overview</h3>
+
+    <ul class="list">
+        <li>Total Users: {{ users|length }}</li>
+        <li>Total Households: {{ total_households }}</li>
+        <li>Total Grocery Items: {{ total_items }}</li>
+    </ul>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>User List</h3>
+
+    <p>
+    Below is the list of all registered users in the system.
+    </p>
+
+    {% if users %}
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No users found.</p>
+    {% endif %}
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Model Management</h3>
+
+    <p>
+    Retrain the machine learning model using the latest usage data.
+    This improves prediction accuracy for identifying at-risk items.
+    </p>
+
+    <a href="/admin/retrain">
+        <button>Retrain Model</button>
+    </a>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Navigation</h3>
+
+    <a href="/dashboard">Go to Dashboard</a> |
+    <a href="/households">Manage Households</a>
+
+</div>
+
+{% endblock %}

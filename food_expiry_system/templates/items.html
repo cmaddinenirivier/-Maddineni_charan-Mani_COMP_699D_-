@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Grocery Items</h2>
+
+<p>
+This page allows you to manage all grocery items in your household.
+You can add new items, update details, track usage, and monitor expiry dates.
+Use this section regularly to reduce food waste and improve planning.
+</p>
+
+<div class="section">
+
+    <h3>Add New Item</h3>
+
+    <form method="POST" action="/add_item">
+        <input type="hidden" name="household_id" value="{{ household_id }}">
+
+        <label>Name</label>
+        <input type="text" name="name" required>
+
+        <label>Category</label>
+        <input type="text" name="category" required>
+
+        <label>Quantity</label>
+        <input type="number" name="quantity" required>
+
+        <label>Purchase Date</label>
+        <input type="date" name="purchase_date" required>
+
+        <label>Expiry Date</label>
+        <input type="date" name="expiry_date" required>
+
+        <button type="submit">Add Item</button>
+    </form>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Items List</h3>
+
+    {% if items %}
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Expiry Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.category }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.expiry_date }}</td>
+                <td>{{ item.status }}</td>
+
+                <td>
+
+                    <form method="POST" action="/use_item/{{ item.id }}" style="display:inline;">
+                        <input type="hidden" name="household_id" value="{{ household_id }}">
+                        <input type="hidden" name="quantity" value="1">
+
+                        <button name="action" value="used">Used</button>
+                        <button name="action" value="partial">Partial</button>
+                        <button name="action" value="wasted">Wasted</button>
+                    </form>
+
+                    <br><br>
+
+                    <a href="/delete_item/{{ item.id }}?household_id={{ household_id }}">Delete</a>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <p>No items found. Add items to begin tracking.</p>
+    {% endif %}
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Navigation</h3>
+
+    <a href="/dashboard?household_id={{ household_id }}">Go to Dashboard</a> |
+    <a href="/alerts?household_id={{ household_id }}">View Alerts</a> |
+    <a href="/households">Back to Households</a>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add Grocery Item</h2>
+
+<p>
+Use this page to add a new grocery item to your household.
+Provide accurate purchase and expiry dates so the system can track freshness,
+generate alerts, and make intelligent predictions.
+</p>
+
+<div class="section">
+
+    <form method="POST" action="/add_item">
+
+        <input type="hidden" name="household_id" value="{{ household_id }}">
+
+        <label>Item Name</label>
+        <input type="text" name="name" placeholder="Enter item name" required>
+
+        <label>Category</label>
+        <input type="text" name="category" placeholder="Example: Dairy, Vegetables" required>
+
+        <label>Quantity</label>
+        <input type="number" name="quantity" placeholder="Enter quantity" required>
+
+        <label>Purchase Date</label>
+        <input type="date" name="purchase_date" required>
+
+        <label>Expiry Date</label>
+        <input type="date" name="expiry_date" required>
+
+        <button type="submit">Add Item</button>
+
+    </form>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Guidelines</h3>
+
+    <ul class="list">
+        <li>Enter correct dates to enable accurate expiry tracking</li>
+        <li>Use clear category names for better filtering</li>
+        <li>Update item usage regularly for better predictions</li>
+    </ul>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+    <h3>Navigation</h3>
+
+    <a href="/items?household_id={{ household_id }}">Back to Items</a> |
+    <a href="/dashboard?household_id={{ household_id }}">Go to Dashboard</a> |
+    <a href="/alerts?household_id={{ household_id }}">View Alerts</a>
+
+</div>
+
+{% endblock %}
